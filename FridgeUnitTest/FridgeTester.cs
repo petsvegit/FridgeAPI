@@ -108,6 +108,16 @@ namespace FridgeUnitTest
             Double result = currentFridge.TakeItemFromFridge(inventoryItemMeatballs, 5);
             Assert.AreEqual(-5, result);
         }
- 
+
+
+        [TestMethod]
+        public void FromFridgeListInventoryItems()
+        {
+            FridgeRepository currentRepo = new FridgeRepository();
+
+            currentRepo.ListAllInventory();
+
+        }
+
     }
 }
