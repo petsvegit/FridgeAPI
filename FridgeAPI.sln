@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FridgeAPI", "FridgeAPI\FridgeAPI.csproj", "{979AF909-5468-4FA5-97DE-82A381AFA6D5}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5628ABC5-A8D8-4D1E-92B2-2CC39A3B2C83}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fridge", "Fridge\Fridge.csproj", "{E0AD0617-5C9F-4CBB-A9BF-D49F916298E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FridgeUnitTest", "FridgeUnitTest\FridgeUnitTest.csproj", "{BBE6713C-8B13-4C73-9255-8C581E451BAE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{979AF909-5468-4FA5-97DE-82A381AFA6D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{979AF909-5468-4FA5-97DE-82A381AFA6D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{979AF909-5468-4FA5-97DE-82A381AFA6D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{979AF909-5468-4FA5-97DE-82A381AFA6D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5628ABC5-A8D8-4D1E-92B2-2CC39A3B2C83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5628ABC5-A8D8-4D1E-92B2-2CC39A3B2C83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5628ABC5-A8D8-4D1E-92B2-2CC39A3B2C83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5628ABC5-A8D8-4D1E-92B2-2CC39A3B2C83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0AD0617-5C9F-4CBB-A9BF-D49F916298E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0AD0617-5C9F-4CBB-A9BF-D49F916298E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0AD0617-5C9F-4CBB-A9BF-D49F916298E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0AD0617-5C9F-4CBB-A9BF-D49F916298E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBE6713C-8B13-4C73-9255-8C581E451BAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBE6713C-8B13-4C73-9255-8C581E451BAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBE6713C-8B13-4C73-9255-8C581E451BAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBE6713C-8B13-4C73-9255-8C581E451BAE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
