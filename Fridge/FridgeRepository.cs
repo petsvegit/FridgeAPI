@@ -38,9 +38,10 @@ namespace Fridge
 
         public void UpdateInventoryItem(FridgeInventory item)
         {
-            //var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
-            //var query = Query<FridgeInventory>.EQ(fi => fi.Id, item.Id); 
-            //collection.UpdateOne(query, item);
+            var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
+            var builder = Builders<FridgeInventory>.Filter;
+            var filter = builder.Eq("_id", item.Id); 
+            var result = collection.ReplaceOne(filter, item);
         }
 
 
