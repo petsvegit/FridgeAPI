@@ -115,8 +115,15 @@ namespace FridgeUnitTest
         {
             IFridgeRepository currentRepo = new FridgeRepository();
 
-            currentRepo.ListAllInventory();
+            //currentRepo.AddInventoryItem(new FridgeInventory("gurka", 10));
+            currentRepo.AddInventoryItem(new FridgeInventory("tomat", 10));
 
+            var inventoryList = currentRepo.ListAllInventory();
+
+           var inventory = currentRepo.GetInventoryItem("gurka");
+        
+            if (inventory.Quantity == 10) {}
+            ;
         }
 
     }

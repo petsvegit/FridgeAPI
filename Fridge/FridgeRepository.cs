@@ -6,30 +6,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using MongoDB.Driver.Linq;
+
 namespace Fridge
 {
    public class FridgeRepository:IFridgeRepository
                         
     {
-      
-        public void AddInventoryItem(FridgeInventory item)
-        {
-            var collection = GetMongoConnection().GetCollection<BsonDocument>("Inventory");
-            var document = new BsonDocument() {
-                { "name", item.Name },
-                { "quantity", item.Quantity }
-            };
 
-            collection.InsertOne(document);
-        }
-
-        
         private IMongoDatabase GetMongoConnection()
         {
             string connectionString = "mongodb://localhost:49155";
 
             MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
-        
+
             //1. Connect to MongoDB instance running on localhost
             var client = new MongoClient(settings);
 
@@ -37,32 +27,42 @@ namespace Fridge
             return client.GetDatabase("FridgeDb");
         }
 
+
+        public void AddInventoryItem(FridgeInventory item)
+        {
+            var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
+            collection.InsertOne(item);
+        }
+
+        
+
         public void UpdateInventoryItem(FridgeInventory item)
         {
-            throw new NotImplementedException();
+            //var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
+            //var query = Query<FridgeInventory>.EQ(fi => fi.Id, item.Id); 
+            //collection.UpdateOne(query, item);
         }
+
 
         List<FridgeInventory> IFridgeRepository.ListAllInventory()
         {
-
             //Access collection named 'Inventory'
-            var collection = GetMongoConnection().GetCollection<BsonDocument>("Inventory");
+            var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
 
-            var documents = collection.Find(new BsonDocument()).ToList();
-
-            return null;
+            return (from invItem in collection.AsQueryable<FridgeInventory>()
+                    select invItem).ToList();
         }
+
 
         public FridgeInventory GetInventoryItem(string name)
         {
-            var collection = GetMongoConnection().GetCollection<BsonDocument>("Inventory");
-            var filter = Builders<BsonDocument>.Filter.Eq("name", name);
-            var fridgeItems = collection.Find(filter).SingleAsync();
+            var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
 
-            return null;
-   
-            //return BsonSerializer.Deserialize<FridgeInventory>(fridgeItems);
-   
+            return (from invItem in collection.AsQueryable<FridgeInventory>()
+                    where invItem.Name == name
+                    select invItem).FirstOrDefault();
+           
         }
+        
     }
 }

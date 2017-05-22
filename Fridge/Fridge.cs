@@ -1,24 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+
 
 namespace Fridge
 {
     public class FridgeWorker
     {
 
-        public static List<FridgeInventory> InventoryList = new List<FridgeInventory>();
+        private readonly IFridgeRepository _fridgeRepo;
+
+        public FridgeWorker()
+        {
+            _fridgeRepo = new FridgeRepository();
+        }
+
+        public FridgeWorker(IFridgeRepository mockFridgeRepository)
+        {
+            _fridgeRepo = mockFridgeRepository;
+        }
+
+
+
 
         public bool IsItemAvailable(string ingredient, double quantity)
         {
-            return InventoryList.Find(x => x.Name == ingredient && x.Quantity >= quantity) != null;
+            var inventoryItem = _fridgeRepo.GetInventoryItem(ingredient);
+            if (inventoryItem == null) {return false;}
+            return (inventoryItem.Quantity >= quantity);
         }
+
 
         public FridgeInventory GetInventoryItem(string ingredient)
         {
-          return InventoryList.Find(x => x.Name == ingredient);
+          return _fridgeRepo.GetInventoryItem(ingredient);
         }
+
 
         public void AddIngredientToFridge(FridgeInventory item)
         {
@@ -26,44 +41,35 @@ namespace Fridge
 
             if (existingInventoryItem == null)
             {
-                
+                _fridgeRepo.AddInventoryItem(item);   
                 return;
             }
 
             existingInventoryItem.Quantity += item.Quantity;
-
-            InventoryList.Add(new FridgeInventory(item.Name, item.Quantity));
+            _fridgeRepo.UpdateInventoryItem(existingInventoryItem);
 
         }
+
 
         public double TakeItemFromFridge(string inventoryName, double quantity)
         {
             var existingInventoryItem = GetInventoryItem(inventoryName);
 
-            if (existingInventoryItem != null)
+            if (existingInventoryItem == null)
             {
-                if (existingInventoryItem.Quantity < quantity)
-                {
-                    return existingInventoryItem.Quantity - quantity;
-                }
-
-                existingInventoryItem.Quantity -= quantity;
-                return existingInventoryItem.Quantity;
+                return -1 * quantity;
             }
-            return -1 * quantity;
+
+            if (existingInventoryItem.Quantity < quantity)
+            {
+                return existingInventoryItem.Quantity - quantity;
+            }
+
+            existingInventoryItem.Quantity -= quantity;
+            _fridgeRepo.UpdateInventoryItem(existingInventoryItem);
+            return existingInventoryItem.Quantity;
         }
     }
 
-    public class FridgeInventory
-    {
-        public string Name;
-        public double Quantity;
-
-        public FridgeInventory(string name, double quantity)
-        {
-            Name = name;
-            Quantity = quantity;
-        }
-    }
 
 }
