@@ -24,11 +24,13 @@ namespace Fridge
         {
             var existingInventoryItem = GetInventoryItem(item.Name);
 
-            if (existingInventoryItem != null)
+            if (existingInventoryItem == null)
             {
-                existingInventoryItem.Quantity += item.Quantity;
+                
                 return;
             }
+
+            existingInventoryItem.Quantity += item.Quantity;
 
             InventoryList.Add(new FridgeInventory(item.Name, item.Quantity));
 

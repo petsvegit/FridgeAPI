@@ -1,29 +1,29 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Fridge
 {
-   public class FridgeRepository
+   public class FridgeRepository:IFridgeRepository
+                        
     {
-        
-        public void ListAllInventory()
+      
+        public void AddInventoryItem(FridgeInventory item)
         {
- 
-            //Access collection named 'Inventory'
             var collection = GetMongoConnection().GetCollection<BsonDocument>("Inventory");
+            var document = new BsonDocument() {
+                { "name", item.Name },
+                { "quantity", item.Quantity }
+            };
 
-            var documents = collection.Find(new BsonDocument()).ToList();
-
+            collection.InsertOne(document);
         }
 
-        public void AddInventoryItem()
-        {
-
-        }
-
+        
         private IMongoDatabase GetMongoConnection()
         {
             string connectionString = "mongodb://localhost:49155";
@@ -37,5 +37,32 @@ namespace Fridge
             return client.GetDatabase("FridgeDb");
         }
 
+        public void UpdateInventoryItem(FridgeInventory item)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<FridgeInventory> IFridgeRepository.ListAllInventory()
+        {
+
+            //Access collection named 'Inventory'
+            var collection = GetMongoConnection().GetCollection<BsonDocument>("Inventory");
+
+            var documents = collection.Find(new BsonDocument()).ToList();
+
+            return null;
+        }
+
+        public FridgeInventory GetInventoryItem(string name)
+        {
+            var collection = GetMongoConnection().GetCollection<BsonDocument>("Inventory");
+            var filter = Builders<BsonDocument>.Filter.Eq("name", name);
+            var fridgeItems = collection.Find(filter).SingleAsync();
+
+            return null;
+   
+            //return BsonSerializer.Deserialize<FridgeInventory>(fridgeItems);
+   
+        }
     }
 }

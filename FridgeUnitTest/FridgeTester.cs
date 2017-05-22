@@ -113,7 +113,7 @@ namespace FridgeUnitTest
         [TestMethod]
         public void FromFridgeListInventoryItems()
         {
-            FridgeRepository currentRepo = new FridgeRepository();
+            IFridgeRepository currentRepo = new FridgeRepository();
 
             currentRepo.ListAllInventory();
 
