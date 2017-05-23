@@ -7,10 +7,10 @@ namespace Fridge
     public interface IFridgeRepository
     {
 
-         List<FridgeInventory> ListAllInventory();
-         void AddInventoryItem(FridgeInventory item);
-         void UpdateInventoryItem(FridgeInventory item);
-         FridgeInventory GetInventoryItem(string name);
+         List<InventoryItem> ListAllInventory();
+         void AddInventoryItem(InventoryItem item);
+         void UpdateInventoryItem(InventoryItem item);
+         InventoryItem GetInventoryItem(string name);
 
     }
 }

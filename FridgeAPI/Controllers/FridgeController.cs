@@ -26,7 +26,7 @@ namespace FridgeAPI.Controllers
 
         // GET api/values/5
         [HttpGet("{name}")]
-        public FridgeInventory Get(string name)
+        public InventoryItem Get(string name)
         {
             return _fridgeWorker.GetInventoryItem(name);
         }
@@ -41,21 +41,21 @@ namespace FridgeAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]FridgeInventory item)
+        public void Post([FromBody]InventoryItem item)
         {
             _fridgeWorker.AddIngredientToFridge(item);
         }
 
         // PUT api/values/5
         [HttpPut("{name}")]
-        public void Put(string name, [FromBody]FridgeInventory item)
+        public void Put(string name, [FromBody]InventoryItem item)
         {
             _fridgeWorker.AddIngredientToFridge(item);
         }
 
         // DELETE api/values/5
         [HttpDelete("{name}")]
-        public void Delete(string name, [FromBody] FridgeInventory item)
+        public void Delete(string name, [FromBody] InventoryItem item)
         {
             _fridgeWorker.TakeItemFromFridge(item.Name, item.Quantity);
         }

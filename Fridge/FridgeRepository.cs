@@ -16,7 +16,7 @@ namespace Fridge
 
         private IMongoDatabase GetMongoConnection()
         {
-            string connectionString = "mongodb://localhost:49155";
+            string connectionString = "mongodb://172.17.0.3:27017";
 
             MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
 
@@ -28,38 +28,38 @@ namespace Fridge
         }
 
 
-        public void AddInventoryItem(FridgeInventory item)
+        public void AddInventoryItem(InventoryItem item)
         {
-            var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
+            var collection = GetMongoConnection().GetCollection<InventoryItem>("Inventory");
             collection.InsertOne(item);
         }
 
         
 
-        public void UpdateInventoryItem(FridgeInventory item)
+        public void UpdateInventoryItem(InventoryItem item)
         {
-            var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
-            var builder = Builders<FridgeInventory>.Filter;
+            var collection = GetMongoConnection().GetCollection<InventoryItem>("Inventory");
+            var builder = Builders<InventoryItem>.Filter;
             var filter = builder.Eq("_id", item.Id); 
             var result = collection.ReplaceOne(filter, item);
         }
 
 
-        List<FridgeInventory> IFridgeRepository.ListAllInventory()
+        List<InventoryItem> IFridgeRepository.ListAllInventory()
         {
             //Access collection named 'Inventory'
-            var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
+            var collection = GetMongoConnection().GetCollection<InventoryItem>("Inventory");
 
-            return (from invItem in collection.AsQueryable<FridgeInventory>()
+            return (from invItem in collection.AsQueryable<InventoryItem>()
                     select invItem).ToList();
         }
 
 
-        public FridgeInventory GetInventoryItem(string name)
+        public InventoryItem GetInventoryItem(string name)
         {
-            var collection = GetMongoConnection().GetCollection<FridgeInventory>("Inventory");
+            var collection = GetMongoConnection().GetCollection<InventoryItem>("Inventory");
 
-            return (from invItem in collection.AsQueryable<FridgeInventory>()
+            return (from invItem in collection.AsQueryable<InventoryItem>()
                     where invItem.Name == name
                     select invItem).FirstOrDefault();
            

@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Fridge
 {
-    public class FridgeInventory
+    public class InventoryItem
     {
         [BsonElement("_id")]
         public ObjectId Id { get; set; }
@@ -18,7 +18,7 @@ namespace Fridge
         public double Quantity { get; set; }
 
 
-        public FridgeInventory(string name, double quantity)
+        public InventoryItem(string name, double quantity)
         {
             Name = name;
             Quantity = quantity;

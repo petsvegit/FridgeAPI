@@ -29,13 +29,13 @@ namespace Fridge
         }
 
 
-        public FridgeInventory GetInventoryItem(string ingredient)
+        public InventoryItem GetInventoryItem(string ingredient)
         {
           return _fridgeRepo.GetInventoryItem(ingredient);
         }
 
 
-        public void AddIngredientToFridge(FridgeInventory item)
+        public void AddIngredientToFridge(InventoryItem item)
         {
             var existingInventoryItem = GetInventoryItem(item.Name);
 
