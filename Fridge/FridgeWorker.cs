@@ -29,15 +29,16 @@ namespace Fridge
         }
 
 
-        public InventoryItem GetInventoryItem(string ingredient)
+        public FridgeInventoryItemContract GetInventoryItem(string ingredient)
         {
-          return _fridgeRepo.GetInventoryItem(ingredient);
+            ContractTranslator translator = new ContractTranslator();
+            return translator.Translate(_fridgeRepo.GetInventoryItem(ingredient));
         }
 
 
         public void AddIngredientToFridge(InventoryItem item)
         {
-            var existingInventoryItem = GetInventoryItem(item.Name);
+            var existingInventoryItem = _fridgeRepo.GetInventoryItem(item.Name);
 
             if (existingInventoryItem == null)
             {
@@ -51,21 +52,21 @@ namespace Fridge
         }
 
 
-        public double TakeItemFromFridge(string inventoryName, double quantity)
+        public double TakeItemFromFridge(FridgeInventoryItemContract item)
         {
-            var existingInventoryItem = GetInventoryItem(inventoryName);
+            var existingInventoryItem = _fridgeRepo.GetInventoryItem(item.Name);
 
             if (existingInventoryItem == null)
             {
-                return -1 * quantity;
+                return -1 * item.Quantity;
             }
 
-            if (existingInventoryItem.Quantity < quantity)
+            if (existingInventoryItem.Quantity < item.Quantity)
             {
-                return existingInventoryItem.Quantity - quantity;
+                return existingInventoryItem.Quantity - item.Quantity;
             }
 
-            existingInventoryItem.Quantity -= quantity;
+            existingInventoryItem.Quantity -= item.Quantity;
             _fridgeRepo.UpdateInventoryItem(existingInventoryItem);
             return existingInventoryItem.Quantity;
         }

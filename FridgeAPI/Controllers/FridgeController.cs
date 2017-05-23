@@ -26,7 +26,7 @@ namespace FridgeAPI.Controllers
 
         // GET api/values/5
         [HttpGet("{name}")]
-        public InventoryItem Get(string name)
+        public FridgeInventoryItemContract Get(string name)
         {
             return _fridgeWorker.GetInventoryItem(name);
         }
@@ -55,9 +55,9 @@ namespace FridgeAPI.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{name}")]
-        public void Delete(string name, [FromBody] InventoryItem item)
+        public void Delete(string name, [FromBody] FridgeInventoryItemContract item)
         {
-            _fridgeWorker.TakeItemFromFridge(item.Name, item.Quantity);
+            _fridgeWorker.TakeItemFromFridge(item);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Fridge
 {
-    class FridgeInventoryItemContract
+    public class FridgeInventoryItemContract
     {
         public string Name { get; set; }
         public double Quantity { get; set; }

@@ -41,7 +41,7 @@ namespace FridgeUnitTest
 
             currentFridge.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
 
-            InventoryItem result = currentFridge.GetInventoryItem(inventoryItemMeatballs);
+            FridgeInventoryItemContract result = currentFridge.GetInventoryItem(inventoryItemMeatballs);
             Assert.AreEqual(10, result.Quantity);
         }
 
@@ -76,10 +76,10 @@ namespace FridgeUnitTest
             currentFridge.AddIngredientToFridge(new InventoryItem(invItem3, 4));
             currentFridge.AddIngredientToFridge(new InventoryItem(invItem4, 10));
 
-            Double result = currentFridge.TakeItemFromFridge(invItem1, 7);
+            Double result = currentFridge.TakeItemFromFridge(new FridgeInventoryItemContract( invItem1, 7));
             Assert.AreEqual(3, result);
 
-            result = currentFridge.TakeItemFromFridge(invItem1, 7);
+            result = currentFridge.TakeItemFromFridge(new FridgeInventoryItemContract(invItem1, 7));
             Assert.AreEqual(-4, result);
         }
 
@@ -96,7 +96,7 @@ namespace FridgeUnitTest
             currentFridge.AddIngredientToFridge(new InventoryItem(invItem2, 50));
             currentFridge.AddIngredientToFridge(new InventoryItem(invItem3, 4));
 
-            Double result = currentFridge.TakeItemFromFridge(invRemoveItem, 5);
+            Double result = currentFridge.TakeItemFromFridge(new FridgeInventoryItemContract(invRemoveItem, 5));
 
             Assert.AreEqual(-5, result);
         }
@@ -105,7 +105,7 @@ namespace FridgeUnitTest
         public void FromEmptyFridgeRemoveInventoryItem()
         {
             FridgeWorker currentFridge = new FridgeWorker();
-            Double result = currentFridge.TakeItemFromFridge(inventoryItemMeatballs, 5);
+            Double result = currentFridge.TakeItemFromFridge(new FridgeInventoryItemContract(inventoryItemMeatballs, 5));
             Assert.AreEqual(-5, result);
         }
 
