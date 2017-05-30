@@ -16,7 +16,7 @@ namespace Fridge
 
         private IMongoDatabase GetMongoConnection()
         {
-            string connectionString = "mongodb://172.17.0.3:27017";
+            string connectionString = "mongodb://localhost:49155";
 
             MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
 
