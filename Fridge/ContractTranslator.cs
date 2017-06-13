@@ -8,12 +8,12 @@ namespace Fridge
     {
         public FridgeInventoryItemContract Translate(InventoryItem internalItem)
         {
-            return new FridgeInventoryItemContract(internalItem.Name, internalItem.Quantity);
+            return internalItem == null ? null : new FridgeInventoryItemContract(internalItem.Name, internalItem.Quantity);
         }
 
         public InventoryItem Translate(FridgeInventoryItemContract externalItem)
         {
-            return new InventoryItem(externalItem.Name, externalItem.Quantity);
+            return externalItem == null ? null : new InventoryItem(externalItem.Name, externalItem.Quantity);
         }
 
     }

@@ -10,124 +10,162 @@ namespace FridgeUnitTest
     public class FridgeTester
     {
 
-        private string inventoryItemMeatballs = "Meatballs";
-
-        //test
-        [TestMethod]
-        public void ToEmptyFridgeAddOneInventoryItem()
+        [TestClass]
+        public class WithEmptyFridge
         {
-            FridgeWorker currentFridge = new FridgeWorker();
-           
-            currentFridge.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
+            private string inventoryItemMeatballs = "Meatballs";
+
+            [TestMethod]
+            public void GetItem()
+            {
+                MockFridgeRepository mockRepo = new MockFridgeRepository();
+                FridgeWorker fridgeWorker = new FridgeWorker(mockRepo);
+
+                var result = fridgeWorker.GetInventoryItem("Hundgodis");
+                Assert.AreEqual(null, result);
+            }
+
+
+            [TestMethod]
+            public void AddOneInventoryItem()
+            {
+                MockFridgeRepository mockRepo = new MockFridgeRepository();
+                FridgeWorker fridgeWorker = new FridgeWorker(mockRepo);
+
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
+                Assert.AreEqual(1, mockRepo.InventoryItems.Count);
+                Assert.AreEqual(inventoryItemMeatballs, mockRepo.InventoryItems[0].Name);
+                Assert.AreEqual(10, mockRepo.InventoryItems[0].Quantity);
+            }
+
+
+            [TestMethod]
+            public void AddTwoIdenticalInventoryItem()
+            {
+                MockFridgeRepository mockRepo = new MockFridgeRepository();
+                FridgeWorker fridgeWorker = new FridgeWorker(mockRepo);
+
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
+
+                Assert.AreEqual(1, mockRepo.InventoryItems.Count);
+                Assert.AreEqual(20, mockRepo.InventoryItems[0].Quantity);
+            }
+
+            [TestMethod]
+            public void IsItemAvailable()
+            {
+                MockFridgeRepository mockRepo = new MockFridgeRepository();
+                FridgeWorker fridgeWorker = new FridgeWorker(mockRepo);
+                Assert.AreEqual(false, fridgeWorker.IsItemAvailable(inventoryItemMeatballs, 7));
+            }
+
+
+            [TestMethod]
+            public void RemoveInventoryItem()
+            {
+                MockFridgeRepository mockRepo = new MockFridgeRepository();
+                FridgeWorker fridgeWorker = new FridgeWorker(mockRepo);
+                Double result =
+                    fridgeWorker.TakeItemFromFridge(new FridgeInventoryItemContract(inventoryItemMeatballs, 5));
+                Assert.AreEqual(-5, result);
+            }
 
         }
-        
-        [TestMethod]
-        public void ToEmptyFridgeAddTwoIdenticalInventoryItem()
+
+        [TestClass]
+        public class WithNonEmtpyFridge
         {
-            FridgeWorker currentFridge = new FridgeWorker();
+            private string inventoryItemMeatballs = "Meatballs";
 
-            currentFridge.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
-            currentFridge.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
+            [TestMethod]
+            public void GetExistingInventoryItem()
+            {
+                MockFridgeRepository mockRepo = new MockFridgeRepository();
+                FridgeWorker fridgeWorker = new FridgeWorker(mockRepo);
 
-           // Assert.AreEqual( 1, currentFridge.InventoryList.Count);
-           // Assert.AreEqual(20, currentFridge.InventoryList[0].Quantity);
-        }
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
 
-        [TestMethod]
-        public void DoesInventoryItemExist()
-        {
-            FridgeWorker currentFridge = new FridgeWorker();
-
-            currentFridge.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
-
-            FridgeInventoryItemContract result = currentFridge.GetInventoryItem(inventoryItemMeatballs);
-            Assert.AreEqual(10, result.Quantity);
-        }
-
-        [TestMethod]
-        public void FromEmptyFridgeIsItemAvailable()
-        {
-            FridgeWorker currentFridge = new FridgeWorker();
-            Assert.AreEqual(false, currentFridge.IsItemAvailable(inventoryItemMeatballs, 7));
-        }
-
-        [TestMethod]
-        public void FromFullFridgeIsItemAvailable()
-        {
-            FridgeWorker currentFridge = new FridgeWorker();
-
-            currentFridge.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
-
-            Assert.AreEqual(true, currentFridge.IsItemAvailable(inventoryItemMeatballs, 7));
-        }
-
-        [TestMethod]
-        public void FromFullFridgeRemoveExistingInventoryItem()
-        {
-            string invItem1 = "Meatballs";
-            string invItem2 = "Potato";
-            string invItem3 = "Pasta";
-            string invItem4 = "Sauce";
-            FridgeWorker currentFridge = new FridgeWorker();
-
-            currentFridge.AddIngredientToFridge(new InventoryItem(invItem1, 10));
-            currentFridge.AddIngredientToFridge(new InventoryItem(invItem2, 50));
-            currentFridge.AddIngredientToFridge(new InventoryItem(invItem3, 4));
-            currentFridge.AddIngredientToFridge(new InventoryItem(invItem4, 10));
-
-            Double result = currentFridge.TakeItemFromFridge(new FridgeInventoryItemContract( invItem1, 7));
-            Assert.AreEqual(3, result);
-
-            result = currentFridge.TakeItemFromFridge(new FridgeInventoryItemContract(invItem1, 7));
-            Assert.AreEqual(-4, result);
-        }
-
-        [TestMethod]
-        public void FromFullFridgeRemoveNonExistingInventoryItem()
-        {
-            string invItem1 = "Meatballs";
-            string invItem2 = "Potato";
-            string invItem3 = "Pasta";
-            string invRemoveItem = "Sauce";
-            FridgeWorker currentFridge = new FridgeWorker();
-
-            currentFridge.AddIngredientToFridge(new InventoryItem(invItem1, 10));
-            currentFridge.AddIngredientToFridge(new InventoryItem(invItem2, 50));
-            currentFridge.AddIngredientToFridge(new InventoryItem(invItem3, 4));
-
-            Double result = currentFridge.TakeItemFromFridge(new FridgeInventoryItemContract(invRemoveItem, 5));
-
-            Assert.AreEqual(-5, result);
-        }
-
-        [TestMethod]
-        public void FromEmptyFridgeRemoveInventoryItem()
-        {
-            FridgeWorker currentFridge = new FridgeWorker();
-            Double result = currentFridge.TakeItemFromFridge(new FridgeInventoryItemContract(inventoryItemMeatballs, 5));
-            Assert.AreEqual(-5, result);
-        }
+                FridgeInventoryItemContract result = fridgeWorker.GetInventoryItem(inventoryItemMeatballs);
+                Assert.AreEqual(10, result.Quantity);
+            }
 
 
-        [TestMethod]
-        public void FromFridgeListInventoryItems()
-        {
-            IFridgeRepository currentRepo = new FridgeRepository();
+            [TestMethod]
+            public void IsExistingItemAvailable()
+            {
+                MockFridgeRepository mockRepo = new MockFridgeRepository();
+                FridgeWorker fridgeWorker = new FridgeWorker(mockRepo);
 
-            currentRepo.AddInventoryItem(new InventoryItem("gurka", 10));
-            //currentRepo.AddInventoryItem(new FridgeInventory("sallad", 10));
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(inventoryItemMeatballs, 10));
 
-            var inventoryList = currentRepo.ListAllInventory();
+                Assert.AreEqual(true, fridgeWorker.IsItemAvailable(inventoryItemMeatballs, 7));
+            }
 
-           var inventory = currentRepo.GetInventoryItem("gurka");
-            inventory.Quantity = 12;
+            [TestMethod]
+            public void RemoveExistingInventoryItem()
+            {
+                string invItem1 = "Meatballs";
+                string invItem2 = "Potato";
+                string invItem3 = "Pasta";
+                string invItem4 = "Sauce";
 
-            currentRepo.UpdateInventoryItem(inventory);
+                MockFridgeRepository mockRepo = new MockFridgeRepository();
+                FridgeWorker fridgeWorker = new FridgeWorker(mockRepo);
 
-            inventory = currentRepo.GetInventoryItem("gurka");
-            var stopHere = "breakPoint"
-            ;
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(invItem1, 10));
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(invItem2, 50));
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(invItem3, 4));
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(invItem4, 10));
+
+                Double result = fridgeWorker.TakeItemFromFridge(new FridgeInventoryItemContract(invItem1, 7));
+                Assert.AreEqual(3, result);
+
+                result = fridgeWorker.TakeItemFromFridge(new FridgeInventoryItemContract(invItem1, 7));
+                Assert.AreEqual(-4, result);
+            }
+
+            [TestMethod]
+            public void RemoveNonExistingInventoryItem()
+            {
+                string invItem1 = "Meatballs";
+                string invItem2 = "Potato";
+                string invItem3 = "Pasta";
+                string invRemoveItem = "Sauce";
+
+                MockFridgeRepository mockRepo = new MockFridgeRepository();
+                FridgeWorker fridgeWorker = new FridgeWorker(mockRepo);
+
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(invItem1, 10));
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(invItem2, 50));
+                fridgeWorker.AddIngredientToFridge(new InventoryItem(invItem3, 4));
+
+                Double result = fridgeWorker.TakeItemFromFridge(new FridgeInventoryItemContract(invRemoveItem, 5));
+
+                Assert.AreEqual(-5, result);
+            }
+
+
+            //[TestMethod]
+            //public void ListInventoryItems()
+            //{
+            //    IFridgeRepository currentRepo = new FridgeRepository();
+
+            //    currentRepo.AddInventoryItem(new InventoryItem("gurka", 10));
+            //    //currentRepo.AddInventoryItem(new FridgeInventory("sallad", 10));
+
+            //    var inventoryList = currentRepo.ListAllInventory();
+
+            //    var inventory = currentRepo.GetInventoryItem("gurka");
+            //    inventory.Quantity = 12;
+
+            //    currentRepo.UpdateInventoryItem(inventory);
+
+            //    inventory = currentRepo.GetInventoryItem("gurka");
+            //    var stopHere = "breakPoint"
+            //        ;
+            //}
+
         }
 
     }
